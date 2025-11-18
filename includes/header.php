@@ -32,9 +32,6 @@ $base_path = (isset($base_path)) ? $base_path : '../';
                 <a href="<?php echo $base_path; ?>professor/calendario.php" class="nav-link">
                     <span>📆</span> Calendário
                 </a>
-                <a href="<?php echo $base_path; ?>professor/fazer_reserva.php" class="nav-link">
-                    <span>➕</span> Nova Reserva
-                </a>
                 <a href="<?php echo $base_path; ?>professor/minhas_reservas.php" class="nav-link">
                     <span>📋</span> Minhas Reservas
                 </a>

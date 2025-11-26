@@ -161,7 +161,7 @@ try {
                 </div>
 
                 <!-- Alterar Password (só aparece ao editar) -->
-              <!--  <div class="form-group" id="grupoAlterarPassword" style="display: none;">
+                <div class="form-group" id="grupoAlterarPassword" style="display: none;">
                     <label>
                         <input type="checkbox" name="alterar_password" id="checkAlterarPassword" onchange="togglePasswordEdit()">
                         Alterar password
@@ -174,7 +174,7 @@ try {
                 </button>
             </form>
         </div>
-    </div> -->
+    </div> 
 
     <?php include '../includes/footer.php'; ?>
 

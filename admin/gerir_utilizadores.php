@@ -158,16 +158,7 @@ try {
                     <label for="password">Password *</label>
                     <input type="password" name="password" id="inputPassword" placeholder="Mínimo 6 caracteres" minlength="6">
                     <small>A password padrão será gerada automaticamente se deixar em branco.</small>
-                </div>
-
-                <!-- Alterar Password (só aparece ao editar) -->
-                <div class="form-group" id="grupoAlterarPassword" style="display: none;">
-                    <label>
-                        <input type="checkbox" name="alterar_password" id="checkAlterarPassword" onchange="togglePasswordEdit()">
-                        Alterar password
-                    </label>
-                    <input type="password" name="password_nova" id="inputPasswordNova" placeholder="Nova password" minlength="6" disabled style="margin-top: 10px;">
-                </div>
+                </div> 
 
                 <button type="submit" class="btn btn-primary btn-block" id="btnSubmit">
                     Adicionar Professor
@@ -190,7 +181,6 @@ try {
         btnSubmit.textContent = 'Adicionar Professor';
         document.getElementById('inputAcao').value = 'criar';
         document.getElementById('grupoPassword').style.display = 'block';
-        document.getElementById('grupoAlterarPassword').style.display = 'none';
         document.getElementById('inputPassword').required = false; // Opcional ao criar
         form.reset();
         modal.style.display = 'block';
@@ -204,20 +194,8 @@ try {
         document.getElementById('inputUtilizadorId').value = user.utilizador_id;
         document.getElementById('inputNome').value = user.nome;
         document.getElementById('inputEmail').value = user.email;
-        document.getElementById('grupoPassword').style.display = 'none';
-        document.getElementById('grupoAlterarPassword').style.display = 'block';
-        document.getElementById('checkAlterarPassword').checked = false;
-        document.getElementById('inputPasswordNova').disabled = true;
-        document.getElementById('inputPasswordNova').required = false;
+        document.getElementById('grupoPassword').style.display = 'none'; // Esconder campo de password ao editar
         modal.style.display = 'block';
-    }
-    
-    // Toggle password edit
-    function togglePasswordEdit() {
-        const check = document.getElementById('checkAlterarPassword');
-        const input = document.getElementById('inputPasswordNova');
-        input.disabled = !check.checked;
-        input.required = check.checked;
     }
     
     // Fechar modal
@@ -225,6 +203,7 @@ try {
         modal.style.display = 'none';
         form.reset();
     }
+    
     // Resetar password
     function resetarPassword(id, nome) {
         if (confirm('🔑 Resetar password de "' + nome + '"?\n\nUma nova password será gerada automaticamente.')) {

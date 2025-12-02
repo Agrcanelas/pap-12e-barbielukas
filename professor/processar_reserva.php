@@ -1,11 +1,12 @@
 <?php
 /**
  * Processar Reserva
- * Cria uma nova reserva na base de dados
+ * Criar nova reserva no sistema
  */
 
 session_start();
 require_once '../config/database.php';
+require_once '../config/log.php'; // ← NOVO: Incluir sistema de logs
 
 // Verificar se está autenticado
 if (!isset($_SESSION['utilizador_id'])) {
@@ -14,60 +15,63 @@ if (!isset($_SESSION['utilizador_id'])) {
 }
 
 // Verificar se é POST
-if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-    header('Location: calendario.php');
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: calendario.php?erro=metodo');
     exit();
 }
 
-// Receber dados do formulário
-$data = isset($_POST['data']) ? trim($_POST['data']) : '';
+// Receber dados
 $espaco_id = isset($_POST['espaco_id']) ? (int)$_POST['espaco_id'] : 0;
-$hora_inicio = isset($_POST['hora_inicio']) ? trim($_POST['hora_inicio']) : '';
-$hora_fim = isset($_POST['hora_fim']) ? trim($_POST['hora_fim']) : '';
+$data = isset($_POST['data']) ? $_POST['data'] : '';
+$hora_inicio = isset($_POST['hora_inicio']) ? $_POST['hora_inicio'] : '';
+$hora_fim = isset($_POST['hora_fim']) ? $_POST['hora_fim'] : '';
 $turma = isset($_POST['turma']) ? trim($_POST['turma']) : '';
 $nome_professor = isset($_POST['nome_professor']) ? trim($_POST['nome_professor']) : '';
 
 // Validar dados
-if (empty($data) || $espaco_id == 0 || empty($hora_inicio) || empty($hora_fim) || empty($turma) || empty($nome_professor)) {
-    header('Location: calendario.php?erro=campos');
-    exit();
-}
-
-// Validar se hora fim é maior que hora início
-if ($hora_fim <= $hora_inicio) {
-    header('Location: calendario.php?erro=horario');
+if ($espaco_id == 0 || empty($data) || empty($hora_inicio) || empty($hora_fim) || empty($turma)) {
+    header('Location: calendario.php?erro=dados');
     exit();
 }
 
 try {
-    // Verificar novamente se está disponível (segurança)
-    $sql_verificar = "SELECT COUNT(*) as conflitos 
-                      FROM reserva 
-                      WHERE espaco_id = :espaco_id 
-                      AND data = :data 
-                      AND estado = 'confirmada'
-                      AND NOT (hora_fim <= :hora_inicio OR hora_inicio >= :hora_fim)";
+    // Verificar se já existe reserva neste horário
+    $sql_verifica = "SELECT COUNT(*) as conflitos 
+                     FROM reserva 
+                     WHERE espaco_id = :espaco_id 
+                     AND data = :data 
+                     AND estado = 'confirmada'
+                     AND (
+                         (hora_inicio < :hora_fim AND hora_fim > :hora_inicio)
+                     )";
     
-    $stmt = $pdo->prepare($sql_verificar);
-    $stmt->bindParam(':espaco_id', $espaco_id);
-    $stmt->bindParam(':data', $data);
-    $stmt->bindParam(':hora_inicio', $hora_inicio);
-    $stmt->bindParam(':hora_fim', $hora_fim);
-    $stmt->execute();
+    $stmt_verifica = $pdo->prepare($sql_verifica);
+    $stmt_verifica->bindParam(':espaco_id', $espaco_id);
+    $stmt_verifica->bindParam(':data', $data);
+    $stmt_verifica->bindParam(':hora_inicio', $hora_inicio);
+    $stmt_verifica->bindParam(':hora_fim', $hora_fim);
+    $stmt_verifica->execute();
     
-    $resultado = $stmt->fetch();
+    $resultado = $stmt_verifica->fetch();
     
     if ($resultado['conflitos'] > 0) {
-        // Espaço já ocupado
-        header('Location: calendario.php?erro=ocupado');
+        header('Location: calendario.php?erro=conflito');
         exit();
     }
     
-    // Criar a reserva
-    $sql_inserir = "INSERT INTO reserva (utilizador_id, espaco_id, turma, nome_professor, data, hora_inicio, hora_fim, estado) 
-                    VALUES (:utilizador_id, :espaco_id, :turma, :nome_professor, :data, :hora_inicio, :hora_fim, 'confirmada')";
+    // Buscar nome do espaço para o log
+    $sql_espaco = "SELECT nome FROM espaco WHERE espaco_id = :espaco_id";
+    $stmt_espaco = $pdo->prepare($sql_espaco);
+    $stmt_espaco->bindParam(':espaco_id', $espaco_id);
+    $stmt_espaco->execute();
+    $espaco = $stmt_espaco->fetch();
+    $nome_espaco = $espaco ? $espaco['nome'] : 'Espaço desconhecido';
     
-    $stmt = $pdo->prepare($sql_inserir);
+    // Criar reserva
+    $sql = "INSERT INTO reserva (utilizador_id, espaco_id, turma, nome_professor, data, hora_inicio, hora_fim, estado) 
+            VALUES (:utilizador_id, :espaco_id, :turma, :nome_professor, :data, :hora_inicio, :hora_fim, 'confirmada')";
+    
+    $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':utilizador_id', $_SESSION['utilizador_id']);
     $stmt->bindParam(':espaco_id', $espaco_id);
     $stmt->bindParam(':turma', $turma);
@@ -75,13 +79,25 @@ try {
     $stmt->bindParam(':data', $data);
     $stmt->bindParam(':hora_inicio', $hora_inicio);
     $stmt->bindParam(':hora_fim', $hora_fim);
-    $stmt->execute();
     
-    // Reserva criada com sucesso!
-    header('Location: minhas_reservas.php?sucesso=criada');
-    exit();
+    if ($stmt->execute()) {
+        // ✅ NOVO: Registar no log
+        $descricao = "Criou reserva para {$nome_espaco} no dia " . date('d/m/Y', strtotime($data));
+        $detalhes = [
+            'espaco' => $nome_espaco,
+            'data' => $data,
+            'hora_inicio' => $hora_inicio,
+            'hora_fim' => $hora_fim,
+            'turma' => $turma
+        ];
+        registarLog($pdo, $_SESSION['utilizador_id'], 'reserva_criada', $descricao, $detalhes);
+        
+        header('Location: calendario.php?sucesso=reserva_criada');
+    } else {
+        header('Location: calendario.php?erro=bd');
+    }
     
 } catch (PDOException $e) {
-    die("Erro ao criar reserva: " . $e->getMessage());
+    header('Location: calendario.php?erro=bd');
 }
 ?>

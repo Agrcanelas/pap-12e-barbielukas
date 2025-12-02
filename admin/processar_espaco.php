@@ -6,6 +6,7 @@
 
 session_start();
 require_once '../config/database.php';
+require_once '../config/log.php'; // ← NOVO: Incluir sistema de logs
 
 // Verificar se está autenticado e é admin
 if (!isset($_SESSION['utilizador_id']) || $_SESSION['tipo'] != 'admin') {
@@ -13,7 +14,7 @@ if (!isset($_SESSION['utilizador_id']) || $_SESSION['tipo'] != 'admin') {
     exit();
 }
 
-// Determinar ação
+// Receber ação
 $acao = isset($_POST['acao']) ? $_POST['acao'] : (isset($_GET['acao']) ? $_GET['acao'] : '');
 
 try {
@@ -21,101 +22,119 @@ try {
     // ============================================
     // CRIAR ESPAÇO
     // ============================================
-    if ($acao == 'criar' && $_SERVER['REQUEST_METHOD'] == 'POST') {
-        
+    if ($acao == 'criar') {
         $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
         $tipo_espaco = isset($_POST['tipo_espaco']) ? trim($_POST['tipo_espaco']) : '';
         $capacidade = isset($_POST['capacidade']) ? (int)$_POST['capacidade'] : 0;
         
-        // Validar
         if (empty($nome) || empty($tipo_espaco) || $capacidade <= 0) {
-            header('Location: gerir_espacos.php?erro=campos');
+            header('Location: gerir_espacos.php?erro=dados');
             exit();
         }
         
-        // Inserir
-        $sql = "INSERT INTO espaco (nome, tipo_espaco, capacidade, ativo) 
-                VALUES (:nome, :tipo_espaco, :capacidade, 1)";
-        
+        $sql = "INSERT INTO espaco (nome, tipo_espaco, capacidade) VALUES (:nome, :tipo_espaco, :capacidade)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':tipo_espaco', $tipo_espaco);
         $stmt->bindParam(':capacidade', $capacidade);
-        $stmt->execute();
         
-        header('Location: gerir_espacos.php?sucesso=criado');
-        exit();
+        if ($stmt->execute()) {
+            // ✅ NOVO: Registar no log
+            $descricao = "Criou o espaço '{$nome}'";
+            $detalhes = [
+                'nome' => $nome,
+                'tipo_espaco' => $tipo_espaco,
+                'capacidade' => $capacidade
+            ];
+            registarLog($pdo, $_SESSION['utilizador_id'], 'espaco_criado', $descricao, $detalhes);
+            
+            header('Location: gerir_espacos.php?sucesso=criado');
+        } else {
+            header('Location: gerir_espacos.php?erro=bd');
+        }
     }
     
     // ============================================
     // EDITAR ESPAÇO
     // ============================================
-    elseif ($acao == 'editar' && $_SERVER['REQUEST_METHOD'] == 'POST') {
-        
+    elseif ($acao == 'editar') {
         $espaco_id = isset($_POST['espaco_id']) ? (int)$_POST['espaco_id'] : 0;
         $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
         $tipo_espaco = isset($_POST['tipo_espaco']) ? trim($_POST['tipo_espaco']) : '';
         $capacidade = isset($_POST['capacidade']) ? (int)$_POST['capacidade'] : 0;
-        $ativo = isset($_POST['ativo']) ? 1 : 0;
         
-        // Validar
         if ($espaco_id == 0 || empty($nome) || empty($tipo_espaco) || $capacidade <= 0) {
-            header('Location: gerir_espacos.php?erro=campos');
+            header('Location: gerir_espacos.php?erro=dados');
             exit();
         }
         
-        // Atualizar
-        $sql = "UPDATE espaco 
-                SET nome = :nome, 
-                    tipo_espaco = :tipo_espaco, 
-                    capacidade = :capacidade,
-                    ativo = :ativo
-                WHERE espaco_id = :espaco_id";
-        
+        $sql = "UPDATE espaco SET nome = :nome, tipo_espaco = :tipo_espaco, capacidade = :capacidade WHERE espaco_id = :espaco_id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':tipo_espaco', $tipo_espaco);
         $stmt->bindParam(':capacidade', $capacidade);
-        $stmt->bindParam(':ativo', $ativo);
         $stmt->bindParam(':espaco_id', $espaco_id);
-        $stmt->execute();
         
-        header('Location: gerir_espacos.php?sucesso=editado');
-        exit();
+        if ($stmt->execute()) {
+            // ✅ NOVO: Registar no log
+            $descricao = "Editou o espaço '{$nome}'";
+            $detalhes = [
+                'espaco_id' => $espaco_id,
+                'nome' => $nome,
+                'tipo_espaco' => $tipo_espaco,
+                'capacidade' => $capacidade
+            ];
+            registarLog($pdo, $_SESSION['utilizador_id'], 'espaco_editado', $descricao, $detalhes);
+            
+            header('Location: gerir_espacos.php?sucesso=editado');
+        } else {
+            header('Location: gerir_espacos.php?erro=bd');
+        }
     }
     
     // ============================================
     // REMOVER ESPAÇO
     // ============================================
-    elseif ($acao == 'remover' && isset($_GET['id'])) {
-        
-        $espaco_id = (int)$_GET['id'];
+    elseif ($acao == 'remover') {
+        $espaco_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
         
         if ($espaco_id == 0) {
             header('Location: gerir_espacos.php?erro=id');
             exit();
         }
         
-        // Remover espaço (CASCADE irá remover as reservas associadas automaticamente)
+        // Buscar nome do espaço antes de remover
+        $sql_buscar = "SELECT nome FROM espaco WHERE espaco_id = :espaco_id";
+        $stmt_buscar = $pdo->prepare($sql_buscar);
+        $stmt_buscar->bindParam(':espaco_id', $espaco_id);
+        $stmt_buscar->execute();
+        $espaco = $stmt_buscar->fetch();
+        $nome_espaco = $espaco ? $espaco['nome'] : 'Espaço desconhecido';
+        
         $sql = "DELETE FROM espaco WHERE espaco_id = :espaco_id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':espaco_id', $espaco_id);
-        $stmt->execute();
         
-        header('Location: gerir_espacos.php?sucesso=removido');
-        exit();
+        if ($stmt->execute()) {
+            // ✅ NOVO: Registar no log
+            $descricao = "Removeu o espaço '{$nome_espaco}'";
+            $detalhes = [
+                'espaco_id' => $espaco_id,
+                'nome' => $nome_espaco
+            ];
+            registarLog($pdo, $_SESSION['utilizador_id'], 'espaco_removido', $descricao, $detalhes);
+            
+            header('Location: gerir_espacos.php?sucesso=removido');
+        } else {
+            header('Location: gerir_espacos.php?erro=bd');
+        }
     }
     
-    // ============================================
-    // AÇÃO INVÁLIDA
-    // ============================================
     else {
         header('Location: gerir_espacos.php?erro=acao');
-        exit();
     }
     
 } catch (PDOException $e) {
     header('Location: gerir_espacos.php?erro=bd');
-    exit();
 }
 ?>

@@ -130,7 +130,7 @@ function corBadge($tipo) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histórico de Logs - Sistema de Reservas</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=100">
 </head>
 <body>
 
@@ -145,15 +145,15 @@ function corBadge($tipo) {
 
         <!-- Filtros -->
         <div class="filtros-container">
-            <!-- Filtros Rápidos -->
-            <div style="margin-bottom: 20px; text-align: center;">
-                <strong style="display: block; margin-bottom: 10px; color: #666;">⚡ Filtros Rápidos:</strong>
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>" class="btn-filtro-rapido">📅 Todos</a>
-                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d'); ?>&data_fim=<?php echo date('Y-m-d'); ?>" class="btn-filtro-rapido">🌅 Hoje</a>
-                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d', strtotime('monday this week')); ?>&data_fim=<?php echo date('Y-m-d'); ?>" class="btn-filtro-rapido">📆 Esta Semana</a>
-                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-01'); ?>&data_fim=<?php echo date('Y-m-d'); ?>" class="btn-filtro-rapido">📊 Este Mês</a>
-                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d', strtotime('-30 days')); ?>&data_fim=<?php echo date('Y-m-d'); ?>" class="btn-filtro-rapido">🕒 Últimos 30 dias</a>
+           <!-- Filtros Rápidos -->
+            <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 2px solid #E0E0E0;">
+                <strong style="display: block; margin-bottom: 15px; color: #C41E3A; font-size: 16px;">⚡ Filtros Rápidos</strong>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>" style="padding: 10px 20px; background: white; color: #333; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; border: 2px solid #E0E0E0; transition: all 0.3s;">📅 Todos</a>
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d'); ?>&data_fim=<?php echo date('Y-m-d'); ?>" style="padding: 10px 20px; background: white; color: #333; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; border: 2px solid #E0E0E0; transition: all 0.3s;">🌅 Hoje</a>
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d', strtotime('monday this week')); ?>&data_fim=<?php echo date('Y-m-d'); ?>" style="padding: 10px 20px; background: white; color: #333; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; border: 2px solid #E0E0E0; transition: all 0.3s;">📆 Esta Semana</a>
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-01'); ?>&data_fim=<?php echo date('Y-m-d'); ?>" style="padding: 10px 20px; background: white; color: #333; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; border: 2px solid #E0E0E0; transition: all 0.3s;">📊 Este Mês</a>
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d', strtotime('-30 days')); ?>&data_fim=<?php echo date('Y-m-d'); ?>" style="padding: 10px 20px; background: white; color: #333; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; border: 2px solid #E0E0E0; transition: all 0.3s;">🕒 Últimos 30 dias</a>
                 </div>
             </div>
 

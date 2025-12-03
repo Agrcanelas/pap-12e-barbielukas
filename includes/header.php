@@ -46,6 +46,12 @@ $base_path = (isset($base_path)) ? $base_path : '../';
                 <a href="<?php echo $base_path; ?>admin/gerir_utilizadores.php" class="nav-link">
                     <span>👥</span> Utilizadores
                 </a>
+                <a href="<?php echo $base_path; ?>admin/todas_reservas.php" class="nav-link">
+                    <span>📅</span> Reservas
+                </a>
+                <a href="<?php echo $base_path; ?>admin/historico_logs.php" class="nav-link">
+                    <span>📋</span> Histórico
+                </a>
             <?php endif; ?>
         </nav>
 

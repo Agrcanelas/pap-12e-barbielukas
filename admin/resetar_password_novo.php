@@ -8,6 +8,7 @@ session_start();
 $base_path = '../';
 
 require_once '../config/database.php';
+require_once '../config/log.php'; // ← NOVO: Adicionar esta linha
 
 // Verificar se está autenticado e é admin
 if (!isset($_SESSION['utilizador_id']) || $_SESSION['tipo'] != 'admin') {

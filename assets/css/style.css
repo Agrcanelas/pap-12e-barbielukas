@@ -1742,4 +1742,23 @@ body {
     .login-container h1 {
         font-size: 24px;
     }
+    /* Filtros Rápidos - Histórico de Logs */
+    .btn-filtro-rapido {
+        padding: 10px 20px;
+        background: linear-gradient(135deg, #667EEA, #764BA2);
+        color: var(--cor-branco);
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+    .btn-filtro-rapido:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+        background: linear-gradient(135deg, #764BA2, #667EEA);
+}
 }

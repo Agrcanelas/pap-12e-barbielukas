@@ -145,10 +145,23 @@ function corBadge($tipo) {
 
         <!-- Filtros -->
         <div class="filtros-container">
+            <!-- Filtros Rápidos -->
+            <div style="margin-bottom: 20px; text-align: center;">
+                <strong style="display: block; margin-bottom: 10px; color: #666;">⚡ Filtros Rápidos:</strong>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>" class="btn-filtro-rapido">📅 Todos</a>
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d'); ?>&data_fim=<?php echo date('Y-m-d'); ?>" class="btn-filtro-rapido">🌅 Hoje</a>
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d', strtotime('monday this week')); ?>&data_fim=<?php echo date('Y-m-d'); ?>" class="btn-filtro-rapido">📆 Esta Semana</a>
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-01'); ?>&data_fim=<?php echo date('Y-m-d'); ?>" class="btn-filtro-rapido">📊 Este Mês</a>
+                    <a href="?tipo=<?php echo $filtro_tipo; ?>&utilizador=<?php echo $filtro_utilizador; ?>&data_inicio=<?php echo date('Y-m-d', strtotime('-30 days')); ?>&data_fim=<?php echo date('Y-m-d'); ?>" class="btn-filtro-rapido">🕒 Últimos 30 dias</a>
+                </div>
+            </div>
+
+            <!-- Filtros Detalhados -->
             <form method="GET" class="filtros-form">
                 
                 <div class="filtro-grupo">
-                    <label>Tipo de Ação</label>
+                    <label>🔍 Tipo de Ação</label>
                     <select name="tipo">
                         <option value="">Todas</option>
                         <option value="reserva_criada" <?php echo $filtro_tipo == 'reserva_criada' ? 'selected' : ''; ?>>📅 Reserva Criada</option>
@@ -164,7 +177,7 @@ function corBadge($tipo) {
                 </div>
 
                 <div class="filtro-grupo">
-                    <label>Utilizador</label>
+                    <label>👤 Utilizador</label>
                     <select name="utilizador">
                         <option value="">Todos</option>
                         <?php foreach ($utilizadores as $user): ?>
@@ -176,21 +189,25 @@ function corBadge($tipo) {
                 </div>
 
                 <div class="filtro-grupo">
-                    <label>Data Início</label>
-                    <input type="date" name="data_inicio" value="<?php echo htmlspecialchars($filtro_data_inicio); ?>">
+                    <label>📅 De</label>
+                    <input type="date" name="data_inicio" value="<?php echo htmlspecialchars($filtro_data_inicio); ?>" style="padding: 10px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
                 </div>
 
                 <div class="filtro-grupo">
-                    <label>Data Fim</label>
-                    <input type="date" name="data_fim" value="<?php echo htmlspecialchars($filtro_data_fim); ?>">
+                    <label>📅 Até</label>
+                    <input type="date" name="data_fim" value="<?php echo htmlspecialchars($filtro_data_fim); ?>" style="padding: 10px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Filtrar</button>
-                <a href="historico_logs.php" class="btn-limpar-filtros">Limpar</a>
+                <button type="submit" class="btn btn-primary">🔍 Filtrar</button>
+                <a href="historico_logs.php" class="btn-limpar-filtros">🔄 Limpar</a>
             </form>
 
             <div class="info-total">
-                <p><strong><?php echo $total_registos; ?></strong> registo(s) encontrado(s)</p>
+                <?php if ($filtro_tipo || $filtro_utilizador || $filtro_data_inicio || $filtro_data_fim): ?>
+                <p style="color: #FF8C00; font-weight: 600;">🔎 Filtros ativos - <strong><?php echo $total_registos; ?></strong> registo(s) encontrado(s)</p>
+                <?php else: ?>
+                <p><strong><?php echo $total_registos; ?></strong> registo(s) no total</p>
+                <?php endif; ?>
             </div>
         </div>
 

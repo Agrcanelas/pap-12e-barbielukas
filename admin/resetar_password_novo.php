@@ -55,6 +55,15 @@ try {
     $stmt_update->bindParam(':password', $password_encriptada);
     $stmt_update->bindParam(':id', $utilizador_id);
     $stmt_update->execute();
+
+    // ✅ NOVO: Registar no log
+    $descricao = "Resetou a password de '{$utilizador['nome']}'";
+    $detalhes = [
+        'utilizador_id' => $utilizador_id,
+        'nome' => $utilizador['nome'],
+        'email' => $utilizador['email']
+    ];
+    registarLog($pdo, $_SESSION['utilizador_id'], 'password_resetada', $descricao, $detalhes);
     
     // Sucesso
     $sucesso = true;

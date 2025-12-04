@@ -106,7 +106,7 @@ try {
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':utilizador_id', $utilizador_id);
         
-        if ($stmt->execute()) {
+         if ($stmt->execute()) {
             // ✅ NOVO: Registar no log
             $descricao = "Editou o utilizador '{$nome}' ({$email})";
             $detalhes = [
@@ -119,7 +119,7 @@ try {
             header('Location: gerir_utilizadores.php?sucesso=editado');
         } else {
             header('Location: gerir_utilizadores.php?erro=bd');
-        }
+        } 
     }
     
     // ============================================

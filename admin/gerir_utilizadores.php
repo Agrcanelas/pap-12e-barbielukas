@@ -6,7 +6,7 @@
 
 session_start();
 require_once '../config/database.php';
-require_once '../config/log.php'; // ← NOVO: Incluir sistema de logs
+require_once '../config/log.php';
 
 // Verificar se está autenticado e é admin
 if (!isset($_SESSION['utilizador_id']) || $_SESSION['tipo'] != 'admin') {
@@ -59,7 +59,7 @@ try {
         $stmt->bindParam(':password', $password_hash);
         
         if ($stmt->execute()) {
-            // ✅ NOVO: Registar no log
+            // Registar no log
             $descricao = "Criou o utilizador '{$nome}' ({$email})";
             $detalhes = [
                 'nome' => $nome,
@@ -106,8 +106,8 @@ try {
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':utilizador_id', $utilizador_id);
         
-         if ($stmt->execute()) {
-            // ✅ NOVO: Registar no log
+        if ($stmt->execute()) {
+            // Registar no log
             $descricao = "Editou o utilizador '{$nome}' ({$email})";
             $detalhes = [
                 'utilizador_id' => $utilizador_id,
@@ -119,7 +119,7 @@ try {
             header('Location: gerir_utilizadores.php?sucesso=editado');
         } else {
             header('Location: gerir_utilizadores.php?erro=bd');
-        } 
+        }
     }
     
     // ============================================
@@ -153,7 +153,7 @@ try {
         $stmt->bindParam(':utilizador_id', $utilizador_id);
         
         if ($stmt->execute()) {
-            // ✅ NOVO: Registar no log
+            // Registar no log
             $descricao = "Removeu o utilizador '{$nome_utilizador}' ({$email_utilizador})";
             $detalhes = [
                 'utilizador_id' => $utilizador_id,

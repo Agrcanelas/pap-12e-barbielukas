@@ -1771,4 +1771,75 @@ body {
     background: #F0F8FF;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+/* ============================================
+   CAMPOS DE DATA MELHORADOS
+   ============================================ */
+
+/* Campos de data com estilo moderno */
+.filtro-grupo input[type="date"] {
+    padding: 12px 16px !important;
+    border: 2px solid #E0E0E0 !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    color: var(--cor-texto) !important;
+}
+
+.filtro-grupo input[type="date"]:hover {
+    border-color: var(--cor-secundaria) !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.15) !important;
+    transform: translateY(-1px);
+}
+
+.filtro-grupo input[type="date"]:focus {
+    outline: none !important;
+    border-color: var(--cor-secundaria) !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1), 0 4px 12px rgba(74, 144, 226, 0.2) !important;
+}
+
+/* Ícone do calendário dentro do input */
+.filtro-grupo input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 4px;
+    transition: all 0.3s ease;
+    filter: opacity(0.6);
+}
+
+.filtro-grupo input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background: rgba(74, 144, 226, 0.1);
+    filter: opacity(1);
+}
+
+/* Label dos campos de data */
+.filtro-grupo label {
+    font-weight: 600;
+    color: var(--cor-texto);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+}
+
+/* Wrapper dos filtros com melhor espaçamento */
+.filtros-form {
+    background: var(--cor-branco);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.filtro-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 180px;
+}
 }

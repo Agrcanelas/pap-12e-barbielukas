@@ -130,7 +130,7 @@ function corBadge($tipo) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histórico de Logs - Sistema de Reservas</title>
-    <link rel="stylesheet" href="../assets/css/style.css?v=100">
+    <link rel="stylesheet" href="../assets/css/style.css?v=200">
 </head>
 <body>
 
@@ -189,14 +189,40 @@ function corBadge($tipo) {
                 </div>
 
                 <div class="filtro-grupo">
-                    <label>📅 De</label>
-                    <input type="date" name="data_inicio" value="<?php echo htmlspecialchars($filtro_data_inicio); ?>" style="padding: 10px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
-                </div>
+    <label style="font-weight: 600; color: #333; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; font-size: 15px;">📅 De</label>
+    <input type="date" name="data_inicio" value="<?php echo htmlspecialchars($filtro_data_inicio); ?>" 
+           style="padding: 14px 16px; 
+                  border: 2px solid #E0E0E0; 
+                  border-radius: 12px; 
+                  font-size: 15px; 
+                  background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  width: 100%;"
+           onmouseover="this.style.borderColor='#4A90E2'; this.style.boxShadow='0 4px 12px rgba(74, 144, 226, 0.2)'; this.style.transform='translateY(-2px)';"
+           onmouseout="this.style.borderColor='#E0E0E0'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.08)'; this.style.transform='translateY(0)';"
+           onfocus="this.style.borderColor='#4A90E2'; this.style.boxShadow='0 0 0 3px rgba(74, 144, 226, 0.15)';">
+</div>
 
-                <div class="filtro-grupo">
-                    <label>📅 Até</label>
-                    <input type="date" name="data_fim" value="<?php echo htmlspecialchars($filtro_data_fim); ?>" style="padding: 10px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
-                </div>
+<div class="filtro-grupo">
+    <label style="font-weight: 600; color: #333; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; font-size: 15px;">📅 Até</label>
+    <input type="date" name="data_fim" value="<?php echo htmlspecialchars($filtro_data_fim); ?>" 
+           style="padding: 14px 16px; 
+                  border: 2px solid #E0E0E0; 
+                  border-radius: 12px; 
+                  font-size: 15px; 
+                  background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  width: 100%;"
+           onmouseover="this.style.borderColor='#4A90E2'; this.style.boxShadow='0 4px 12px rgba(74, 144, 226, 0.2)'; this.style.transform='translateY(-2px)';"
+           onmouseout="this.style.borderColor='#E0E0E0'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.08)'; this.style.transform='translateY(0)';"
+           onfocus="this.style.borderColor='#4A90E2'; this.style.boxShadow='0 0 0 3px rgba(74, 144, 226, 0.15)';">
+</div>
 
                 <button type="submit" class="btn btn-primary">🔍 Filtrar</button>
                 <a href="historico_logs.php" class="btn-limpar-filtros">🔄 Limpar</a>

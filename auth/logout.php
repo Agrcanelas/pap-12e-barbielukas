@@ -1,7 +1,7 @@
 <?php
 /**
  * Logout
- * Termina a sessão do utilizador e redireciona para o login
+ * Termina a sessão do utilizador e redireciona para a página inicial
  */
 
 session_start();
@@ -17,7 +17,7 @@ if (isset($_COOKIE[session_name()])) {
 // Destruir a sessão
 session_destroy();
 
-// Redirecionar para o login com mensagem
-header('Location: login.php?erro=logout');
+// Redirecionar para a página inicial
+header('Location: ../index.php');
 exit();
 ?>

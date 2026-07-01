@@ -73,7 +73,7 @@ $erro = isset($_GET['erro']) ? $_GET['erro'] : '';
             <!-- Mensagens de Erro -->
             <?php if ($erro == 'credenciais'): ?>
                 <div class="alert alert-erro">
-                    <strong>Erro!</strong> Email ou password incorretos.
+                    <strong>Erro!</strong> Email ou palavra-passe incorretos.
                 </div>
             <?php elseif ($erro == 'campos'): ?>
                 <div class="alert alert-erro">
@@ -90,6 +90,14 @@ $erro = isset($_GET['erro']) ? $_GET['erro'] : '';
             <?php elseif ($erro == 'tipo_utilizador'): ?>
                 <div class="alert alert-erro">
                     <strong>Acesso negado!</strong> Estas credenciais não pertencem ao tipo de acesso escolhido.
+                </div>
+            <?php elseif ($erro == 'email_admin'): ?>
+                <div class="alert alert-erro">
+                    <strong>Acesso negado!</strong> A entrada de administrador só aceita o email admin@canelas.pt.
+                </div>
+            <?php elseif ($erro == 'email_professor'): ?>
+                <div class="alert alert-erro">
+                    <strong>Acesso negado!</strong> O email admin@canelas.pt não pode ser usado na entrada de professor.
                 </div>
             <?php endif; ?>
 
@@ -108,7 +116,7 @@ $erro = isset($_GET['erro']) ? $_GET['erro'] : '';
 
             <!-- Campo Password -->
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Palavra-passe</label>
                 <input 
                     type="password" 
                     id="password" 
@@ -122,6 +130,12 @@ $erro = isset($_GET['erro']) ? $_GET['erro'] : '';
             <button type="submit" class="btn btn-primary">
                 Entrar
             </button>
+
+            <?php if ($tipo_selecionado == 'professor'): ?>
+                <div class="forgot-password-link">
+                    <a href="recuperar_palavra_passe.php">Esqueceu-se da palavra-passe?</a>
+                </div>
+            <?php endif; ?>
 
         </form>
 

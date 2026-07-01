@@ -58,6 +58,9 @@ $base_path = (isset($base_path)) ? $base_path : '../';
         <!-- Informações do Utilizador -->
         <div class="user-menu">
             <span class="user-name"><?php echo htmlspecialchars($_SESSION['nome']); ?></span>
+            <a href="<?php echo $base_path; ?>auth/alterar_password.php" class="btn-password" title="Alterar palavra-passe">
+                🔐 Palavra-passe
+            </a>
             <a href="<?php echo $base_path; ?>auth/logout.php" class="btn-logout" title="Terminar Sessão">
                 🚪 Sair
             </a>

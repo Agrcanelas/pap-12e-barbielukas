@@ -306,6 +306,20 @@ body {
     background: #A01728;
 }
 
+.btn-password {
+    padding: 8px 16px;
+    background: var(--cor-secundaria);
+    color: var(--cor-branco);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-password:hover {
+    background: #3A7BC8;
+}
+
 /* ============================================
    CONTAINER PRINCIPAL
    ============================================ */
@@ -447,7 +461,7 @@ body {
     min-width: 70px;
 }
 
-.reserva-data .dia {
+.reserva-data .calendario .dia {
     display: block;
     font-size: 28px;
     font-weight: bold;
@@ -646,7 +660,7 @@ body {
     gap: 10px;
 }
 
-.dia {
+.calendario .dia {
     aspect-ratio: 1;
     display: flex;
     align-items: center;
@@ -658,29 +672,29 @@ body {
     background: var(--cor-branco);
 }
 
-.dia:hover {
+.calendario .dia:hover {
     border-color: var(--cor-secundaria);
     background: #F0F8FF;
     transform: scale(1.05);
 }
 
-.dia-hoje {
+.calendario .dia-hoje {
     border-color: var(--cor-laranja);
     background: #FFF8E1;
 }
 
-.dia-passado {
+.calendario .dia-passado {
     opacity: 0.4;
     cursor: not-allowed;
 }
 
-.dia-passado:hover {
+.calendario .dia-passado:hover {
     transform: none;
     border-color: #E0E0E0;
     background: var(--cor-branco);
 }
 
-.dia-vazio {
+.calendario .dia-vazio {
     aspect-ratio: 1;
 }
 
@@ -691,24 +705,24 @@ body {
 }
 
 /* Estados de ocupação dos dias */
-.dia-livre {
+.calendario .dia-livre {
     background: #D4EDDA !important;
     border-color: #28A745 !important;
 }
 
-.dia-parcial {
+.calendario .dia-parcial {
     background: #FFF3CD !important;
     border-color: #FFA500 !important;
 }
 
-.dia-ocupado {
+.calendario .dia-ocupado {
     background: #F8D7DA !important;
     border-color: #DC3545 !important;
 }
 
-.dia-livre:hover,
-.dia-parcial:hover,
-.dia-ocupado:hover {
+.calendario .dia-livre:hover,
+.calendario .dia-parcial:hover,
+.calendario .dia-ocupado:hover {
     transform: scale(1.05);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
@@ -1110,11 +1124,26 @@ body {
     50% { opacity: 0.7; }
 }
 
-.reserva-data-badge .dia {
+.reserva-data-badge .calendario .dia {
     display: block;
+    width: auto;
+    height: auto;
+    aspect-ratio: auto;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--cor-branco);
+    cursor: default;
     font-size: 32px;
     font-weight: bold;
     line-height: 1;
+}
+
+.reserva-data-badge .calendario .dia:hover {
+    background: transparent;
+    border: none;
+    transform: none;
 }
 
 .reserva-data-badge .mes {
@@ -1842,4 +1871,104 @@ body {
     gap: 8px;
     min-width: 180px;
 }
+}
+/* ============================================
+   ALTERAR PALAVRA-PASSE
+   ============================================ */
+.password-page {
+    display: flex;
+    justify-content: center;
+}
+
+.password-card {
+    background: var(--cor-branco);
+    width: 100%;
+    max-width: 560px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.password-form small {
+    display: block;
+    margin-top: 6px;
+    color: #666;
+    font-size: 13px;
+}
+
+.password-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.password-actions .btn {
+    text-align: center;
+    width: 100%;
+    margin-top: 0;
+}
+
+@media (max-width: 480px) {
+    .password-actions {
+        grid-template-columns: 1fr;
+    }
+}
+/* ============================================
+   RECUPERAR PALAVRA-PASSE
+   ============================================ */
+.forgot-password-link {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.forgot-password-link a {
+    color: var(--cor-secundaria);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.forgot-password-link a:hover {
+    color: var(--cor-primaria);
+    text-decoration: underline;
+}
+
+.recovery-container {
+    max-width: 520px;
+}
+
+.recovery-info {
+    text-align: left;
+    color: #555;
+    line-height: 1.7;
+    margin: 25px 0;
+}
+
+.recovery-info p {
+    margin-bottom: 14px;
+}
+
+.recovery-contact {
+    background: #F8F9FA;
+    border-left: 4px solid var(--cor-secundaria);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 18px 0;
+}
+
+.recovery-contact strong,
+.recovery-contact span {
+    display: block;
+}
+
+.recovery-contact span {
+    color: var(--cor-primaria);
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.recovery-note {
+    font-size: 14px;
+    color: #666;
 }

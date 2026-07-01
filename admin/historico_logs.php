@@ -99,7 +99,8 @@ function traduzirTipoAcao($tipo) {
         'utilizador_criado' => '👤 Utilizador Criado',
         'utilizador_editado' => '✏️ Utilizador Editado',
         'utilizador_removido' => '🗑️ Utilizador Removido',
-        'password_resetada' => '🔑 Password Resetada',
+        'password_resetada' => '🔑 Palavra-passe reposta',
+        'password_alterada' => '🔐 Palavra-passe alterada',
         'login_sucesso' => '✅ Login',
         'login_falhado' => '❌ Login Falhado'
     ];
@@ -118,7 +119,8 @@ function corBadge($tipo) {
         'utilizador_criado' => 'badge-sucesso',
         'utilizador_editado' => 'badge-aviso',
         'utilizador_removido' => 'badge-cancelada',
-        'password_resetada' => 'badge-aviso'
+        'password_resetada' => 'badge-aviso',
+        'password_alterada' => 'badge-aviso'
     ];
     
     return $cores[$tipo] ?? 'badge';
@@ -172,7 +174,7 @@ function corBadge($tipo) {
                         <option value="utilizador_criado" <?php echo $filtro_tipo == 'utilizador_criado' ? 'selected' : ''; ?>>👤 Utilizador Criado</option>
                         <option value="utilizador_editado" <?php echo $filtro_tipo == 'utilizador_editado' ? 'selected' : ''; ?>>✏️ Utilizador Editado</option>
                         <option value="utilizador_removido" <?php echo $filtro_tipo == 'utilizador_removido' ? 'selected' : ''; ?>>🗑️ Utilizador Removido</option>
-                        <option value="password_resetada" <?php echo $filtro_tipo == 'password_resetada' ? 'selected' : ''; ?>>🔑 Password Resetada</option>
+                        <option value="password_resetada" <?php echo $filtro_tipo == 'password_resetada' ? 'selected' : ''; ?>>🔑 Palavra-passe reposta</option>
                     </select>
                 </div>
 

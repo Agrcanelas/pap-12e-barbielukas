@@ -17,10 +17,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tipo_selecionado = isset($_POST['tipo_selecionado']) && in_array($_POST['tipo_selecionado'], $tipos_validos) ? $_POST['tipo_selecionado'] : '';
     $login_url = 'login.php' . (!empty($tipo_selecionado) ? '?tipo=' . urlencode($tipo_selecionado) : '');
     $separador_erro = !empty($tipo_selecionado) ? '&' : '?';
+    $email_admin = 'admin@canelas.pt';
+    $email_normalizado = strtolower($email);
     
     // Validar se os campos estão preenchidos
     if (empty($email) || empty($password)) {
         header('Location: ' . $login_url . $separador_erro . 'erro=campos');
+        exit();
+    }
+
+    // Separar de forma explícita as entradas de admin e professor
+    if ($tipo_selecionado == 'admin' && $email_normalizado !== $email_admin) {
+        header('Location: ' . $login_url . $separador_erro . 'erro=email_admin');
+        exit();
+    }
+
+    if ($tipo_selecionado == 'professor' && $email_normalizado === $email_admin) {
+        header('Location: ' . $login_url . $separador_erro . 'erro=email_professor');
         exit();
     }
     

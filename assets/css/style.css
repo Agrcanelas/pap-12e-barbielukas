@@ -461,7 +461,7 @@ body {
     min-width: 70px;
 }
 
-.reserva-data .calendario .dia {
+.reserva-data .dia {
     display: block;
     font-size: 28px;
     font-weight: bold;
@@ -1124,7 +1124,7 @@ body {
     50% { opacity: 0.7; }
 }
 
-.reserva-data-badge .calendario .dia {
+.reserva-data-badge .dia {
     display: block;
     width: auto;
     height: auto;
@@ -1140,7 +1140,7 @@ body {
     line-height: 1;
 }
 
-.reserva-data-badge .calendario .dia:hover {
+.reserva-data-badge .dia:hover {
     background: transparent;
     border: none;
     transform: none;
@@ -1971,4 +1971,101 @@ body {
 .recovery-note {
     font-size: 14px;
     color: #666;
+}
+/* ============================================
+   ALERTA RESERVAS AMANHÃ
+   ============================================ */
+.alerta-reservas-content {
+    max-width: 620px;
+}
+
+.alerta-reservas-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #E0E0E0;
+    margin-bottom: 18px;
+}
+
+.alerta-reservas-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #FFF3CD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.alerta-reservas-header h2 {
+    margin: 0 0 4px 0;
+    color: var(--cor-primaria);
+    font-size: 24px;
+}
+
+.alerta-reservas-header p {
+    margin: 0;
+    color: #666;
+}
+
+.alerta-reservas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.alerta-reserva-item {
+    background: #F8F9FA;
+    border-left: 4px solid var(--cor-secundaria);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 16px;
+    align-items: center;
+}
+
+.alerta-reserva-item strong {
+    color: var(--cor-primaria);
+    font-size: 16px;
+}
+
+.alerta-reserva-item span {
+    font-weight: 700;
+    color: var(--cor-texto);
+}
+
+.alerta-reserva-item small {
+    color: #666;
+    grid-column: 1 / -1;
+}
+
+.alerta-reservas-acoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.alerta-reservas-acoes .btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 0;
+}
+
+@media (max-width: 560px) {
+    .alerta-reservas-header {
+        align-items: flex-start;
+    }
+
+    .alerta-reserva-item {
+        grid-template-columns: 1fr;
+    }
+
+    .alerta-reservas-acoes {
+        grid-template-columns: 1fr;
+    }
 }

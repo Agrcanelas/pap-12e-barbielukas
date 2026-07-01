@@ -46,6 +46,24 @@ try {
     $stmt->bindParam(':id', $_SESSION['utilizador_id']);
     $stmt->execute();
     $proximas_reservas = $stmt->fetchAll();
+
+    // Buscar reservas de amanhã para mostrar aviso uma vez por sessão
+    $sql_amanha = "SELECT r.*, e.nome as espaco_nome
+                   FROM reserva r
+                   JOIN espaco e ON r.espaco_id = e.espaco_id
+                   WHERE r.utilizador_id = :id
+                   AND r.estado = 'confirmada'
+                   AND r.data = DATE_ADD(CURDATE(), INTERVAL 1 DAY)
+                   ORDER BY r.hora_inicio ASC";
+    $stmt = $pdo->prepare($sql_amanha);
+    $stmt->bindParam(':id', $_SESSION['utilizador_id']);
+    $stmt->execute();
+    $reservas_amanha = $stmt->fetchAll();
+
+    $mostrar_aviso_amanha = count($reservas_amanha) > 0 && empty($_SESSION['aviso_reservas_amanha_mostrado']);
+    if ($mostrar_aviso_amanha) {
+        $_SESSION['aviso_reservas_amanha_mostrado'] = true;
+    }
     
 } catch (PDOException $e) {
     die("Erro ao buscar dados: " . $e->getMessage());
@@ -146,6 +164,52 @@ try {
 
     </div>
 
+    <?php if (!empty($mostrar_aviso_amanha)): ?>
+    <div id="modalReservasAmanha" class="modal modal-alerta-reservas" style="display: block;">
+        <div class="modal-content alerta-reservas-content">
+            <button type="button" class="modal-fechar" onclick="fecharAvisoReservasAmanha()">&times;</button>
+
+            <div class="alerta-reservas-header">
+                <div class="alerta-reservas-icon">📌</div>
+                <div>
+                    <h2>Reservas para amanhã</h2>
+                    <p>Tem <?php echo count($reservas_amanha); ?> reserva(s) marcada(s) para amanhã.</p>
+                </div>
+            </div>
+
+            <div class="alerta-reservas-lista">
+                <?php foreach ($reservas_amanha as $reserva): ?>
+                <div class="alerta-reserva-item">
+                    <strong><?php echo htmlspecialchars($reserva['espaco_nome']); ?></strong>
+                    <span><?php echo substr($reserva['hora_inicio'], 0, 5); ?> - <?php echo substr($reserva['hora_fim'], 0, 5); ?></span>
+                    <small>Turma: <?php echo htmlspecialchars($reserva['turma']); ?></small>
+                </div>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="alerta-reservas-acoes">
+                <a href="minhas_reservas.php" class="btn btn-primary">Ver minhas reservas</a>
+                <button type="button" class="btn btn-secondary" onclick="fecharAvisoReservasAmanha()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function fecharAvisoReservasAmanha() {
+        const modal = document.getElementById('modalReservasAmanha');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('modalReservasAmanha');
+        if (modal && event.target === modal) {
+            fecharAvisoReservasAmanha();
+        }
+    });
+    </script>
+    <?php endif; ?>
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
 

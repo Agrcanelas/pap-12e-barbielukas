@@ -8,9 +8,14 @@
 session_start();
 require_once '../config/database.php';
 
-// Verificar se está autenticado
+// Verificar se está autenticado e é professor
 if (!isset($_SESSION['utilizador_id'])) {
     echo json_encode(['erro' => 'Não autenticado']);
+    exit();
+}
+
+if ($_SESSION['tipo'] != 'professor') {
+    echo json_encode(['erro' => 'Acesso negado']);
     exit();
 }
 

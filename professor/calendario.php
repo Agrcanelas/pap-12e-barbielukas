@@ -7,9 +7,14 @@
 session_start();
 $base_path = '../';
 
-// Verificar se está autenticado
+// Verificar se está autenticado e é professor
 if (!isset($_SESSION['utilizador_id'])) {
     header('Location: ../auth/login.php');
+    exit();
+}
+
+if ($_SESSION['tipo'] != 'professor') {
+    header('Location: ../admin/index.php');
     exit();
 }
 
@@ -31,7 +36,7 @@ $nome_mes = strftime('%B', $primeiro_dia);
 
 // Buscar todos os espaços
 try {
-    $sql_espacos = "SELECT * FROM espaco WHERE ativo = 1 ORDER BY nome";
+    $sql_espacos = "SELECT * FROM espaco ORDER BY nome";
     $espacos = $pdo->query($sql_espacos)->fetchAll();
     
     // Buscar ocupação de todos os espaços neste mês

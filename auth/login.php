@@ -6,8 +6,27 @@
 
 session_start();
 
-// Se já estiver autenticado, redirecionar
+$tipos_validos = ['professor', 'admin'];
+$tipo_selecionado = isset($_GET['tipo']) && in_array($_GET['tipo'], $tipos_validos) ? $_GET['tipo'] : '';
+
+function terminarSessaoAtual() {
+    $_SESSION = array();
+
+    if (isset($_COOKIE[session_name()])) {
+        setcookie(session_name(), '', time() - 42000, '/');
+    }
+
+    session_destroy();
+}
+
+// Se já estiver autenticado, só reaproveitar a sessão se o tipo escolhido for igual
 if (isset($_SESSION['utilizador_id'])) {
+    if (!empty($tipo_selecionado) && ($_SESSION['tipo'] ?? '') !== $tipo_selecionado) {
+        terminarSessaoAtual();
+        header('Location: login.php?tipo=' . urlencode($tipo_selecionado) . '&erro=tipo_sessao');
+        exit();
+    }
+
     if ($_SESSION['tipo'] == 'admin') {
         header('Location: ../admin/index.php');
     } else {
@@ -37,10 +56,19 @@ $erro = isset($_GET['erro']) ? $_GET['erro'] : '';
 
         <!-- Título -->
         <h1>Sistema de Reservas</h1>
-        <p class="subtitle">Agrupamento de Escolas Canelas</p>
+        <p class="subtitle">
+            <?php if ($tipo_selecionado == 'professor'): ?>
+                Entrada de Professor
+            <?php elseif ($tipo_selecionado == 'admin'): ?>
+                Entrada de Administrador
+            <?php else: ?>
+                Agrupamento de Escolas Canelas
+            <?php endif; ?>
+        </p>
 
         <!-- Formulário de Login -->
         <form action="verificar_login.php" method="POST" class="login-form">
+            <input type="hidden" name="tipo_selecionado" value="<?php echo htmlspecialchars($tipo_selecionado); ?>">
             
             <!-- Mensagens de Erro -->
             <?php if ($erro == 'credenciais'): ?>
@@ -54,6 +82,14 @@ $erro = isset($_GET['erro']) ? $_GET['erro'] : '';
             <?php elseif ($erro == 'logout'): ?>
                 <div class="alert alert-sucesso">
                     <strong>Sessão terminada!</strong> Faça login novamente.
+                </div>
+            <?php elseif ($erro == 'tipo_sessao'): ?>
+                <div class="alert alert-aviso">
+                    <strong>Atenção!</strong> A sessão anterior era de outro tipo. Faça login novamente.
+                </div>
+            <?php elseif ($erro == 'tipo_utilizador'): ?>
+                <div class="alert alert-erro">
+                    <strong>Acesso negado!</strong> Estas credenciais não pertencem ao tipo de acesso escolhido.
                 </div>
             <?php endif; ?>
 

@@ -140,7 +140,7 @@ try {
         <?php else: ?>
         <div class="sem-reservas">
             <p>📭 Não tem reservas nos próximos 7 dias.</p>
-            <a href="fazer_reserva.php" class="btn btn-primary">Fazer Nova Reserva</a>
+            <a href="calendario.php" class="btn btn-primary">Fazer Nova Reserva</a>
         </div>
         <?php endif; ?>
 

@@ -92,7 +92,7 @@ try {
                         <td><?php echo htmlspecialchars($espaco['tipo_espaco']); ?></td>
                         <td><?php echo $espaco['capacidade']; ?> pessoas</td>
                         <td>
-                            <?php if ($espaco['ativo']): ?>
+                            <?php if (($espaco['ativo'] ?? 1)): ?>
                                 <span class="badge badge-confirmada">Ativo</span>
                             <?php else: ?>
                                 <span class="badge badge-cancelada">Inativo</span>

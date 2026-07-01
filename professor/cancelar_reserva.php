@@ -8,9 +8,14 @@ session_start();
 require_once '../config/database.php';
 require_once '../config/log.php'; // ← NOVO: Incluir sistema de logs
 
-// Verificar se está autenticado
+// Verificar se está autenticado e é professor
 if (!isset($_SESSION['utilizador_id'])) {
     header('Location: ../auth/login.php');
+    exit();
+}
+
+if ($_SESSION['tipo'] != 'professor') {
+    header('Location: ../admin/index.php');
     exit();
 }
 

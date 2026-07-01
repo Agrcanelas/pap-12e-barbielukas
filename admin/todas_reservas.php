@@ -24,7 +24,7 @@ $espaco_filtro = isset($_GET['espaco']) ? (int)$_GET['espaco'] : 0;
 
 try {
     // Buscar espaços para o filtro
-    $sql_espacos = "SELECT * FROM espaco WHERE ativo = 1 ORDER BY nome";
+    $sql_espacos = "SELECT * FROM espaco ORDER BY nome";
     $espacos = $pdo->query($sql_espacos)->fetchAll();
     
     // Montar query conforme filtros

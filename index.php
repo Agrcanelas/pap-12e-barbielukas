@@ -290,7 +290,7 @@
             <div class="login-buttons">
                 
                 <!-- Professor Login -->
-                <a href="auth/login.php" class="login-card professor">
+                <a href="auth/login.php?tipo=professor" class="login-card professor">
                     <div class="card-icon">👨‍🏫</div>
                     <h3>Sou Professor</h3>
                     <p>Aceda ao sistema para fazer e gerir as suas reservas de espaços</p>
@@ -298,7 +298,7 @@
                 </a>
 
                 <!-- Admin Login -->
-                <a href="auth/login.php" class="login-card admin">
+                <a href="auth/login.php?tipo=admin" class="login-card admin">
                     <div class="card-icon">🔧</div>
                     <h3>Sou Administrador</h3>
                     <p>Aceda ao painel de gestão completa do sistema</p>

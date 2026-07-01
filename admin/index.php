@@ -25,7 +25,7 @@ try {
     // Estatísticas gerais
     
     // Total de espaços
-    $sql_espacos = "SELECT COUNT(*) as total FROM espaco WHERE ativo = 1";
+    $sql_espacos = "SELECT COUNT(*) as total FROM espaco";
     $total_espacos = $pdo->query($sql_espacos)->fetch()['total'];
     
     // Total de utilizadores (professores)
@@ -56,7 +56,7 @@ try {
                     FROM reserva r
                     JOIN espaco e ON r.espaco_id = e.espaco_id
                     JOIN utilizador u ON r.utilizador_id = u.utilizador_id
-                    ORDER BY r.data_criacao DESC
+                    ORDER BY r.criado_em DESC
                     LIMIT 5";
     $ultimas_reservas = $pdo->query($sql_ultimas)->fetchAll();
     
@@ -89,7 +89,7 @@ try {
                 <div class="stat-icon">🏫</div>
                 <div class="stat-info">
                     <h3><?php echo $total_espacos; ?></h3>
-                    <p>Espaços Ativos</p>
+                    <p>Espaços Registados</p>
                 </div>
             </div>
             

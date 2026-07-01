@@ -13,10 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Receber dados do formulário
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+    $tipos_validos = ['professor', 'admin'];
+    $tipo_selecionado = isset($_POST['tipo_selecionado']) && in_array($_POST['tipo_selecionado'], $tipos_validos) ? $_POST['tipo_selecionado'] : '';
+    $login_url = 'login.php' . (!empty($tipo_selecionado) ? '?tipo=' . urlencode($tipo_selecionado) : '');
+    $separador_erro = !empty($tipo_selecionado) ? '&' : '?';
     
     // Validar se os campos estão preenchidos
     if (empty($email) || empty($password)) {
-        header('Location: login.php?erro=campos');
+        header('Location: ' . $login_url . $separador_erro . 'erro=campos');
         exit();
     }
     
@@ -34,6 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Verificar a password
             // NOTA: A password na BD deve estar encriptada com password_hash()
             if (password_verify($password, $utilizador['password'])) {
+                if (!empty($tipo_selecionado) && $utilizador['tipo'] !== $tipo_selecionado) {
+                    header('Location: ' . $login_url . $separador_erro . 'erro=tipo_utilizador');
+                    exit();
+                }
+                
+                session_regenerate_id(true);
                 
                 // Login bem-sucedido! Criar sessão
                 $_SESSION['utilizador_id'] = $utilizador['utilizador_id'];
@@ -51,13 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
             } else {
                 // Password incorreta
-                header('Location: login.php?erro=credenciais');
+                header('Location: ' . $login_url . $separador_erro . 'erro=credenciais');
                 exit();
             }
             
         } else {
             // Email não encontrado
-            header('Location: login.php?erro=credenciais');
+            header('Location: ' . $login_url . $separador_erro . 'erro=credenciais');
             exit();
         }
         
